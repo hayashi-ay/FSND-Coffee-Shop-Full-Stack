@@ -22,13 +22,13 @@ CORS(app)
 @app.route('/drinks')
 def get_drinks():
     drinks = list(map(lambda  x: x.short(), Drink.query.all() ) )
-    return jsonify( {"success": True, "drinks": drinks}, 200 )
+    return jsonify( {"success": True, "drinks": drinks} ), 200
 
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(jwt):
     drinks = list(map(lambda  x: x.long(), Drink.query.all() ) )
-    return jsonify( { "success": True, "drinks": drinks }, 200 )
+    return jsonify( { "success": True, "drinks": drinks } ), 200
 
 
 '''
