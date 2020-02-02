@@ -24,14 +24,6 @@ def get_drinks():
     drinks = list(map(lambda  x: x.short(), Drink.query.all() ) )
     return jsonify( {"success": True, "drinks": drinks}, 200 )
 
-'''
-@TODO implement endpoint
-    GET /drinks-detail
-        it should require the 'get:drinks-detail' permission
-        it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
-        or appropriate status code indicating reason for failure
-'''
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(jwt):
