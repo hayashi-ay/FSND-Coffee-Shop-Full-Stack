@@ -57,17 +57,14 @@ def update_drinks(jwt, drink_id):
     drink.update()
     return jsonify( { "success": True, "drinks": drink.long() } ), 200
 
-'''
-@TODO implement endpoint
-    DELETE /drinks/<id>
-        where <id> is the existing model id
-        it should respond with a 404 error if <id> is not found
-        it should delete the corresponding row for <id>
-        it should require the 'delete:drinks' permission
-    returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
-        or appropriate status code indicating reason for failure
-'''
+@app.route('/drinks/<int:drink_id>', methods=["DELETE"])
+@requires_auth('delete:drinks')
+def delete_drinks(jwt, drink_id):
+    if drink_id is None:
+        abort(404)
 
+    Drink.query.get(drink_id).delete()
+    return jsonify( { "success": True, "delete": drink_id } ), 200
 
 ## Error Handling
 '''
