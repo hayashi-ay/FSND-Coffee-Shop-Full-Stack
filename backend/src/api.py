@@ -30,17 +30,14 @@ def get_drinks_detail(jwt):
     drinks = list(map(lambda  x: x.long(), Drink.query.all() ) )
     return jsonify( { "success": True, "drinks": drinks } ), 200
 
+@app.route('/drinks', methods=["POST"])
+@requires_auth('post:drinks')
+def create_drinks(jwt):
+    body = request.get_json()
+    drink = Drink( body['title'], json.dumps(body['recipe']) )
 
-'''
-@TODO implement endpoint
-    POST /drinks
-        it should create a new row in the drinks table
-        it should require the 'post:drinks' permission
-        it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
-        or appropriate status code indicating reason for failure
-'''
-
+    drink.insert()
+    return jsonify( { "success": True, "drinks": drink.long() } ), 200
 
 '''
 @TODO implement endpoint
