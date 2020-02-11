@@ -57,7 +57,7 @@ def update_drinks(jwt, drink_id):
         drink.recipe = json.dumps(body['recipe'])
 
     drink.update()
-    return jsonify( { "success": True, "drinks": drink.long() } ), 200
+    return jsonify( { "success": True, "drinks": [ drink.long() ] } ), 200
 
 @app.route('/drinks/<int:drink_id>', methods=["DELETE"])
 @requires_auth('delete:drinks')
