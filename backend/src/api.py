@@ -83,7 +83,12 @@ def resource_not_found(error):
         "message": "resource not found"
     }), 404
 
-'''
-@TODO implement error handler for AuthError
-    error handler should conform to general task above 
-'''
+@app.errorhandler(400)
+@app.errorhandler(403)
+@app.errorhandler(404)
+def errorhandler(error):
+    return jsonify({
+        "success": False,
+        "error": error.code,
+        "message": error.description
+    }, error.code)
