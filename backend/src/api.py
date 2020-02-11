@@ -74,9 +74,9 @@ def delete_drinks(jwt, drink_id):
 @app.errorhandler(403)
 @app.errorhandler(404)
 @app.errorhandler(422)
-def errorhandler(error):
+def error_handler(error):
     return jsonify({
         "success": False,
         "error": error.code,
         "message": error.description
-    }, error.code)
+    }), error.code
