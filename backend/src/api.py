@@ -45,11 +45,11 @@ def update_drinks(jwt, drink_id):
     body = request.get_json()
 
     if drink_id is None:
-        abort(404)
+        abort(404, "resource not found")
 
     drink = Drink.query.filter_by(id=drink_id).one_or_none()
     if drink is None:
-        abort(404)
+        abort(404, "resource not found")
 
     drink.title = body['title']
     drink.recipe = json.dumps(body['recipe'])
@@ -61,31 +61,16 @@ def update_drinks(jwt, drink_id):
 @requires_auth('delete:drinks')
 def delete_drinks(jwt, drink_id):
     if drink_id is None:
-        abort(404)
+        abort(404, "resource not found")
 
     Drink.query.get(drink_id).delete()
     return jsonify( { "success": True, "delete": drink_id } ), 200
 
 ## Error Handling
-@app.errorhandler(422)
-def unprocessable(error):
-    return jsonify({
-        "success": False,
-        "error": 422,
-        "message": "unprocessable"
-    }), 422
-
-@app.errorhandler(404)
-def resource_not_found(error):
-    return jsonify({
-        "success": False,
-        "error": 404,
-        "message": "resource not found"
-    }), 404
-
 @app.errorhandler(400)
 @app.errorhandler(403)
 @app.errorhandler(404)
+@app.errorhandler(422)
 def errorhandler(error):
     return jsonify({
         "success": False,
