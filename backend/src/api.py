@@ -71,7 +71,6 @@ def delete_drinks(jwt, drink_id):
 ## Error Handling
 @app.errorhandler(400)
 @app.errorhandler(401)
-@app.errorhandler(403)
 @app.errorhandler(404)
 @app.errorhandler(422)
 def error_handler(error):
