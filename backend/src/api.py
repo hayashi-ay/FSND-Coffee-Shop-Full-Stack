@@ -50,8 +50,11 @@ def update_drinks(jwt, drink_id):
     if drink is None:
         abort(404, "resource not found")
 
-    drink.title = body['title']
-    drink.recipe = json.dumps(body['recipe'])
+    if 'title' in body:
+        drink.title = body['title']
+
+    if 'recipe' in body:
+        drink.recipe = json.dumps(body['recipe'])
 
     drink.update()
     return jsonify( { "success": True, "drinks": drink.long() } ), 200
