@@ -35,7 +35,10 @@ def create_drinks(jwt):
     body = request.get_json()
     drink = Drink( body['title'], json.dumps(body['recipe']) )
 
-    drink.insert()
+    try:
+        drink.insert()
+    except:
+        abort(422, "unprocessable")
     return jsonify( { "success": True, "drinks": drink.long() } ), 200
 
 @app.route('/drinks/<int:drink_id>', methods=["PATCH"])
@@ -56,7 +59,10 @@ def update_drinks(jwt, drink_id):
     if 'recipe' in body:
         drink.recipe = json.dumps(body['recipe'])
 
-    drink.update()
+    try:
+        drink.update()
+    except:
+        abort(422, "unprocessable")
     return jsonify( { "success": True, "drinks": [ drink.long() ] } ), 200
 
 @app.route('/drinks/<int:drink_id>', methods=["DELETE"])
@@ -65,7 +71,10 @@ def delete_drinks(jwt, drink_id):
     if drink_id is None:
         abort(404, "resource not found")
 
-    Drink.query.get(drink_id).delete()
+    try:
+        Drink.query.get(drink_id).delete()
+    except:
+        abort(422, "unprocessable")
     return jsonify( { "success": True, "delete": drink_id } ), 200
 
 ## Error Handling
